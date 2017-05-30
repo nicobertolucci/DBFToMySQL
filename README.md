@@ -19,7 +19,7 @@ Installation and use
 
 ```bash
 git clone https://github.com/hisamu/php-xbase.git
-git clone https://github.com/jorgecasas/DBFToMySQL.git
+git clone https://github.com/DanielvV/DBFToMySQL.git
 
 ```
 * Configure MySQL info and paths to directory where DBF/PFT files are located in configuration file **config.php**
