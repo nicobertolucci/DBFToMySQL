@@ -94,6 +94,7 @@ function dbftomysql($file) {
 //	import_dbf($db_path, $tbl);
 }
 
+// Not used (see above)
 function import_dbf($db_path, $tbl) {
 	global $conn;
 	global $die_on_mysql_error;
@@ -134,7 +135,7 @@ function import_dbf($db_path, $tbl) {
 		$val = implode(",",$line);
 		$col = implode(",",$fields);
 
-        if($GLOBALS['from_encoding']!="")$val = mb_convert_encoding($val, 'UTF-8', $GLOBALS['from_encoding'] );
+		if($GLOBALS['from_encoding']!="")$val = iconv($GLOBALS['from_encoding'], 'UTF-8', $val);
 
 		$sql = "INSERT INTO `$tbl` ($col) VALUES ($val)\n";
 		// print_r ("$sql");
@@ -167,14 +168,34 @@ function import_dbf_to_mysql( $table, $dbf_path, $fpt_path ) {
         $sql1 = "INSERT INTO `$table` (";
         $sql2 = ") values (";
         $sql = "";
-        foreach ( $Record as $key => $val ) {
-        	$key = (strpos($key, 0x00) !== false ) ? substr($key, 0, strpos($key, 0x00)) : $key;
+        foreach ( $Record[ 'type' ] as $key => $type ) {
+            $val = $Record[ 'value' ][ $key ];
+            $key = (strpos($key, 0x00) !== false ) ? substr($key, 0, strpos($key, 0x00)) : $key;
 
             if ( $val == '{BINARY_PICTURE}' ) {
                 continue;
             }
+            switch( $type ) {
+	            case 'C':	// Character field
+	            case 'M':	// Memo type field
+		            $val = sprintf("'%s'", $val );
+		            break;
+	            case 'F':	// Floating Point
+		            $val = sprintf("%7.2f", $val );
+		            break;
+	            case 'N':	// Numeric
+		            $val = sprintf("%d", $val );
+		            break;
+	            case 'L':	// Logical - ? Y y N n T t F f (? when not initialized).
+	                    $val = sprintf("%d", ( ( strtolower($val) === 't' || strtolower($val) === 'y' ) ? 1 : 0) );
+		            break;
+	            case 'T':	// DateTime
+	            case 'D':	// Date
+		            $val = sprintf("'%s'", strftime("%Y-%m-%d %H:%M", (int) $val ) );
+		            break;
+            }
             $val = str_replace( "'", "", $val );
-            if($GLOBALS['from_encoding']!="")$val = mb_convert_encoding($val, 'UTF-8', $GLOBALS['from_encoding'] );
+            if($GLOBALS['from_encoding']!="")$val = iconv($GLOBALS['from_encoding'], 'UTF-8', $val);
             $a = $a + 1;
             if ( $a == 1 ) {
                 $sql1 .="`$key`";
