@@ -42,6 +42,7 @@ function dbftomysql($file) {
 	// Open dbase file
 	$table = new Table($db_path);
 	$tbl = substr($file,0,strlen($file)-4);
+	print ( "Beware: space of C (Character field) - will be double in MySQL for the special case of a full special-chars-only field\n" );
 	print_r ("$tbl");
 	$line = array();
 
@@ -49,7 +50,7 @@ function dbftomysql($file) {
 		print_r("\t$column->name ($column->type / $column->length)\n");
 		switch($column->type) {
 			case 'C':	// Character field
-				$line[]= "`$column->name` VARCHAR($column->length)";
+				$line[]= "`$column->name` VARCHAR(" . $column->length * 2 . ")"; // double space for utf-8 conversion of special chars
 				break;
 			case 'F':	// Floating Point
 				$line[]= "`$column->name` FLOAT";
