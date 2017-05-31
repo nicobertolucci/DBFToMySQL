@@ -192,7 +192,7 @@ function import_dbf_to_mysql( $table, $dbf_path, $fpt_path ) {
 		            break;
 	            case 'T':	// DateTime
 	            case 'D':	// Date
-		            $val = sprintf("'%s'", strftime("%Y-%m-%d %H:%M", (int) $val ) );
+		            $val = sprintf("'%s'", strftime("%Y-%m-%d %H:%M", strtotime($val) ) );
 		            break;
             }
             $val = str_replace( "'", "", $val );
