@@ -17,6 +17,7 @@ set_time_limit( 0 );
 $time_start = time();
 $files = scandir($xbase_dir) or die ("Error! Could not open directory '$xbase_dir'.");
 $conn = new mysqli($db_host, $db_uname, $db_passwd, $db_name) or die ("Error connecting to mysql $mysqli->connect_error");
+mysqli_set_charset($conn, 'utf8');
 
 foreach ($files as $file) {
   switch ($file) {
