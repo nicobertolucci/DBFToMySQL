@@ -57,7 +57,7 @@ function dbftomysql($file) {
 				$line[]= "`$column->name` FLOAT";
 				break;
 			case 'N':	// Numeric
-				$line[]= "`$column->name` NUMERIC(" . $column->length . ", 2)";
+				$line[]= "`$column->name` VARCHAR(" . $column->length . ")";
 				break;
 			case 'L':	// Logical - ? Y y N n T t F f (? when not initialized).
 				$line[]= "`$column->name` TINYINT";
@@ -121,7 +121,7 @@ function import_dbf($db_path, $tbl) {
 					$line[]=sprintf("%7.2f", $record->getObject($column) );
 					break;
 				case 'N':	// Numeric
-					$line[]=sprintf("%d", $record->getObject($column) );
+					$line[]=sprintf("'%s'", $record->getObject($column) );
 					break;
 				case 'L':	// Logical - ? Y y N n T t F f (? when not initialized).
 					// $line[] = sprintf("%d", ($record->getBoolean($column) ? 1 : 0) );
@@ -186,7 +186,7 @@ function import_dbf_to_mysql( $table, $dbf_path, $fpt_path ) {
 		            $val = sprintf("%7.2f", $val );
 		            break;
 	            case 'N':	// Numeric
-		            $val = sprintf("%d", $val );
+		            $val = sprintf("'%s'", $val );
 		            break;
 	            case 'L':	// Logical - ? Y y N n T t F f (? when not initialized).
 	                    $val = sprintf("%d", ( ( strtolower($val) === 't' || strtolower($val) === 'y' ) ? 1 : 0) );
