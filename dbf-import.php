@@ -57,7 +57,7 @@ function dbftomysql($file) {
 				$line[]= "`$column->name` FLOAT";
 				break;
 			case 'N':	// Numeric
-				$line[]= "`$column->name` FLOAT";
+				$line[]= "`$column->name` NUMERIC(" . $column->length . ", 2)";
 				break;
 			case 'L':	// Logical - ? Y y N n T t F f (? when not initialized).
 				$line[]= "`$column->name` TINYINT";
