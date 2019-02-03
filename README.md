@@ -1,3 +1,5 @@
+Nicolas Bertolucci 
+https://www.devcognitio.com.ar
 DBF To MySQL 
 ========================================================================================================================
 
@@ -14,17 +16,14 @@ This script is based on:
 
 Installation and use
 ------------------------------------------------------------------------------------------------------------------------
-
-* Install php-xbase and this library from Github in the same directory. The dbase extension for PHP don't read MEMO data (or do it badly), so php-xbase is needed.
-
 ```bash
-git clone https://github.com/hisamu/php-xbase.git
-git clone https://github.com/DanielvV/DBFToMySQL.git
+git clone https://github.com/nicobertolucci/DBFToMySQL.git
 
 ```
-* Configure MySQL info and paths to directory where DBF/PFT files are located in configuration file **config.php**
+* Configure MySQL info and paths to directory where DBF/PFT files are located in configuration file **config.php**. Remember that you need to change it from config.sample.php to config.php
 
 * Use it:
+Open console in this folder and type:
 
 ```php
 php dbf-import.php

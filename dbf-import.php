@@ -196,15 +196,15 @@ function import_dbf_to_mysql( $table, $dbf_path, $fpt_path ) {
 		            $val = sprintf("'%s'", strftime("%Y-%m-%d %H:%M", strtotime($val) ) );
 		            break;
             }
-            $val = str_replace( "'", "", $val );
+            $val = str_replace( "'", "", utf8_encode($val) );
             if($GLOBALS['from_encoding']!="")$val = iconv($GLOBALS['from_encoding'], 'UTF-8', $val);
             $a = $a + 1;
             if ( $a == 1 ) {
                 $sql1 .="`$key`";
-                $sql2 .="'" . trim( $val ) . "'";
+                $sql2 .="'" . utf8_encode(trim( $val )) . "'";
             } else {
                 $sql1 .=",`$key`";
-                $sql2 .=",'$val'";
+                $sql2 .=",'". utf8_encode($val) ."'";
             }
         }
         $sql = "$sql1 $sql2)";
